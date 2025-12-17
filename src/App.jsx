@@ -122,15 +122,15 @@ const ChevronRight = () => (
 
 // ==================== HEADER ====================
 const Header = () => (
-  <header className="absolute top-0 left-0 right-0 z-50 px-8 py-6">
-    <nav className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
+  <header className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
+    <nav className="max-w-4xl mx-auto bg-[#4a5c4a]/80 backdrop-blur-sm rounded-full px-8 py-3 flex items-center justify-center gap-6 md:gap-10">
       <a href="#destinos" className="text-white/90 hover:text-white text-sm tracking-wide transition-colors">
         Destinos
       </a>
       <a href="#experiencias" className="text-white/90 hover:text-white text-sm tracking-wide transition-colors">
         Experiencias
       </a>
-      <a href="/" className="mx-4 md:mx-8">
+      <a href="/" className="mx-4 md:mx-6">
         <span className="font-serif text-white text-2xl md:text-3xl tracking-wider">costalegre</span>
       </a>
       <a href="#hospedaje" className="text-white/90 hover:text-white text-sm tracking-wide transition-colors">
@@ -145,25 +145,32 @@ const Header = () => (
 
 // ==================== HERO SECTION ====================
 const HeroSection = () => (
-  <section className="relative h-screen min-h-[700px] overflow-hidden">
-    <div 
-      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop')`,
-      }}
+  <section className="relative h-screen min-h-[700px] overflow-hidden bg-black">
+    {/* Video Background */}
+    <video 
+      autoPlay 
+      muted 
+      loop 
+      playsInline
+      className="absolute inset-0 w-full h-full object-cover"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-transparent to-slate-900/60" />
-    </div>
+      <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4" />
+    </video>
+    
+    {/* Overlay sutil */}
+    <div className="absolute inset-0 bg-black/10" />
     
     <Header />
     
-    <div className="relative h-full flex flex-col items-center justify-center text-center text-white px-4">
-      <p className="text-sm tracking-[0.3em] uppercase mb-4 opacity-90">Jalisco, México</p>
-      <h1 className="font-serif text-5xl md:text-7xl font-light mb-2">Presenta</h1>
-      
-      <button className="mt-12 flex items-center gap-3 bg-[#0f3d4a] hover:bg-[#1a5568] text-white px-6 py-3 rounded-full transition-all duration-300 group">
-        <span className="text-sm">Ver el video</span>
-        <PlayIcon />
+    {/* Botón Ver el video - esquina inferior derecha */}
+    <div className="absolute bottom-8 right-8 z-10">
+      <button className="flex items-center gap-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white pl-6 pr-5 py-3 rounded-full transition-all duration-300 border border-white/30">
+        <span className="text-sm font-medium">Ver el video</span>
+        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+          <svg className="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
       </button>
     </div>
   </section>
@@ -256,15 +263,10 @@ const MapSection = () => {
           <div className="relative hidden lg:block">
             <div className="aspect-square max-w-lg mx-auto">
               <svg viewBox="0 0 400 400" className="w-full h-full">
-                {/* Ocean */}
                 <rect x="0" y="0" width="150" height="400" fill="#3bb4a4"/>
-                
-                {/* Land masses */}
                 <path d="M150,0 L180,50 L200,100 L180,150 L200,200 L220,250 L200,300 L180,350 L200,400 L400,400 L400,0 Z" fill="#e8a54b"/>
                 <path d="M200,50 L250,30 L300,60 L280,120 L320,150 L300,200 L340,250 L300,300 L350,350 L400,320 L400,100 L350,50 L300,80 L250,60 Z" fill="#9b7bb8"/>
                 <path d="M300,200 L350,180 L400,220 L400,320 L350,300 L320,260 Z" fill="#c4a67c"/>
-                
-                {/* Destination dots */}
                 {[
                   { x: 190, y: 320, name: 'Barra de Navidad' },
                   { x: 180, y: 280, name: 'Melaque' },
@@ -283,20 +285,14 @@ const MapSection = () => {
                     className="cursor-pointer transition-all duration-300"
                   />
                 ))}
-                
-                {/* Active destination label */}
                 <g transform="translate(200, 310)">
                   <rect x="0" y="0" width="120" height="28" rx="4" fill="#0f3d4a"/>
                   <text x="60" y="18" textAnchor="middle" fill="white" fontSize="10" fontFamily="sans-serif">
                     {activeDestination.name}
                   </text>
                 </g>
-                
-                {/* Decorative elements */}
                 <text x="350" y="80" fill="#0f3d4a" fontSize="10" opacity="0.6">Guadalajara</text>
                 <text x="380" y="380" fill="#0f3d4a" fontSize="10" opacity="0.6">Colima</text>
-                
-                {/* Compass */}
                 <g transform="translate(100, 280)">
                   <circle cx="0" cy="0" r="20" fill="none" stroke="white" strokeWidth="0.5" opacity="0.4"/>
                   <text x="0" y="-8" textAnchor="middle" fill="white" fontSize="8" opacity="0.6">N</text>
@@ -353,7 +349,6 @@ const ExperiencesSection = () => {
   return (
     <section id="experiencias" className="py-20 px-8 bg-white">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
           <h2 className="font-serif text-4xl md:text-5xl text-[#0f3d4a]">
             ¿Qué hacer en Costalegre?
@@ -363,7 +358,6 @@ const ExperiencesSection = () => {
           </button>
         </div>
         
-        {/* Experience Carousel */}
         <div className="relative">
           <Carousel
             slideSize="100%"
@@ -385,8 +379,6 @@ const ExperiencesSection = () => {
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"/>
-                  
-                  {/* Content */}
                   <div className="absolute bottom-0 left-0 p-8 md:p-12 text-white max-w-lg">
                     <span className="text-xs tracking-[0.2em] uppercase opacity-80">{exp.tag}</span>
                     <h3 className="font-serif text-3xl md:text-4xl mt-3 mb-4">{exp.title}</h3>
@@ -396,8 +388,6 @@ const ExperiencesSection = () => {
                       <ArrowRight />
                     </button>
                   </div>
-                  
-                  {/* Slide indicator */}
                   <div className="absolute bottom-8 right-8 text-white/80">
                     <span className="text-2xl font-light">{currentSlide + 1}</span>
                     <span className="text-sm opacity-60">/{experiences.length}</span>
@@ -406,8 +396,6 @@ const ExperiencesSection = () => {
               </Carousel.Slide>
             ))}
           </Carousel>
-          
-          {/* Custom Navigation */}
           <button className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-all z-10">
             <ChevronRight />
           </button>
@@ -422,7 +410,6 @@ const LodgingSection = () => (
   <section id="hospedaje" className="py-20 px-8 bg-[#f5f1ea]">
     <div className="max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-4 gap-8">
-        {/* Left Content */}
         <div className="lg:col-span-1">
           <span className="text-xs tracking-[0.2em] text-[#0f3d4a]/60 uppercase">Hospedaje</span>
           <h2 className="font-serif text-3xl md:text-4xl text-[#0f3d4a] mt-4 mb-6">
@@ -434,8 +421,6 @@ const LodgingSection = () => (
           <button className="flex items-center gap-2 border border-[#0f3d4a]/30 text-[#0f3d4a] px-6 py-3 rounded-full hover:bg-[#0f3d4a] hover:text-white transition-all duration-300">
             <span className="text-sm">Explorar hospedajes</span>
           </button>
-          
-          {/* Navigation arrows */}
           <div className="flex gap-2 mt-8">
             <button className="w-10 h-10 rounded-full border border-[#0f3d4a]/30 flex items-center justify-center text-[#0f3d4a] hover:bg-[#0f3d4a] hover:text-white transition-all">
               <ChevronLeft />
@@ -446,46 +431,29 @@ const LodgingSection = () => (
           </div>
         </div>
         
-        {/* Hotel Cards */}
         <div className="lg:col-span-3 grid md:grid-cols-3 gap-6">
           {hotels.map((hotel) => (
             <div key={hotel.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-              {/* Image */}
               <div className="relative h-48">
                 <img src={hotel.image} alt={hotel.name} className="w-full h-full object-cover"/>
-                {/* Tags */}
                 <div className="absolute top-3 left-3 flex flex-wrap gap-1">
                   {hotel.tags.map((tag, i) => (
-                    <span 
-                      key={i}
-                      className="text-xs px-2 py-1 rounded-full bg-white/90 text-[#0f3d4a]"
-                    >
+                    <span key={i} className="text-xs px-2 py-1 rounded-full bg-white/90 text-[#0f3d4a]">
                       {tag}
                     </span>
                   ))}
                 </div>
-                {/* Price */}
                 <div className="absolute bottom-3 right-3 bg-[#0f3d4a] text-white px-3 py-1 rounded-full text-sm">
                   {hotel.price}
                 </div>
               </div>
-              
-              {/* Content */}
               <div className="p-5">
                 <h3 className="font-semibold text-[#0f3d4a] text-lg mb-3">{hotel.name}</h3>
-                
                 <div className="space-y-2 text-sm text-[#0f3d4a]/70">
-                  <p>
-                    <span className="text-[#0f3d4a]/50">Ubicación:</span> {hotel.location}
-                  </p>
-                  <p>
-                    <span className="text-[#0f3d4a]/50">Contacto:</span> {hotel.contact}
-                  </p>
-                  <p>
-                    <span className="text-[#0f3d4a]/50">Teléfono:</span> {hotel.phone}
-                  </p>
+                  <p><span className="text-[#0f3d4a]/50">Ubicación:</span> {hotel.location}</p>
+                  <p><span className="text-[#0f3d4a]/50">Contacto:</span> {hotel.contact}</p>
+                  <p><span className="text-[#0f3d4a]/50">Teléfono:</span> {hotel.phone}</p>
                 </div>
-                
                 <button className="mt-4 flex items-center gap-2 text-[#d4a855] hover:gap-3 transition-all duration-300 text-sm font-medium">
                   <span>Ir al sitio web</span>
                   <ArrowRight />
@@ -510,7 +478,6 @@ const CTABanner = () => (
     >
       <div className="absolute inset-0 bg-[#0f3d4a]/50"/>
     </div>
-    
     <div className="relative h-full flex flex-col items-center justify-center text-center text-white px-4">
       <h2 className="font-serif text-4xl md:text-6xl mb-4">Siente el equilibrio</h2>
       <p className="tracking-[0.3em] uppercase text-sm opacity-80">Costalegre te espera</p>
@@ -523,7 +490,6 @@ const BlogSection = () => (
   <section id="blog" className="py-20 px-8 bg-white">
     <div className="max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-4 gap-8">
-        {/* Left Content */}
         <div className="lg:col-span-1">
           <span className="text-xs tracking-[0.2em] text-[#0f3d4a]/60 uppercase">Blog</span>
           <h2 className="font-serif text-3xl md:text-4xl text-[#0f3d4a] mt-4 mb-6">
@@ -535,8 +501,6 @@ const BlogSection = () => (
           <button className="flex items-center gap-2 border border-[#0f3d4a]/30 text-[#0f3d4a] px-6 py-3 rounded-full hover:bg-[#0f3d4a] hover:text-white transition-all duration-300">
             <span className="text-sm">Explorar el blog</span>
           </button>
-          
-          {/* Navigation arrows */}
           <div className="flex gap-2 mt-8">
             <button className="w-10 h-10 rounded-full border border-[#0f3d4a]/30 flex items-center justify-center text-[#0f3d4a] hover:bg-[#0f3d4a] hover:text-white transition-all">
               <ChevronLeft />
@@ -547,7 +511,6 @@ const BlogSection = () => (
           </div>
         </div>
         
-        {/* Blog Cards */}
         <div className="lg:col-span-3 grid md:grid-cols-3 gap-6">
           {blogPosts.map((post) => (
             <article key={post.id} className="group cursor-pointer">
@@ -581,7 +544,6 @@ const Footer = () => (
   <footer className="bg-[#0f3d4a] text-white py-16 px-8">
     <div className="max-w-7xl mx-auto">
       <div className="grid md:grid-cols-4 gap-12">
-        {/* Logo */}
         <div className="md:col-span-1">
           <div className="flex items-end gap-2 mb-2">
             <span className="font-serif text-2xl tracking-wider">costalegre</span>
@@ -592,7 +554,6 @@ const Footer = () => (
           <p className="text-white/60 text-sm italic">Jalisco, México</p>
         </div>
         
-        {/* Navigation */}
         <div>
           <nav className="space-y-3">
             <a href="#destinos" className="block text-white/80 hover:text-white transition-colors">Destinos</a>
@@ -602,7 +563,6 @@ const Footer = () => (
           </nav>
         </div>
         
-        {/* Legal */}
         <div>
           <nav className="space-y-3">
             <a href="#" className="block text-white/60 hover:text-white transition-colors text-sm">Aviso de privacidad</a>
@@ -611,7 +571,6 @@ const Footer = () => (
           </nav>
         </div>
         
-        {/* Social */}
         <div>
           <div className="flex gap-4">
             <a href="#" className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors">
@@ -628,7 +587,6 @@ const Footer = () => (
         </div>
       </div>
       
-      {/* Copyright */}
       <div className="mt-12 pt-8 border-t border-white/10">
         <p className="text-white/40 text-sm">
           Costalegre © 2024 Todos los derechos Reservados
