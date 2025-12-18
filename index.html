@@ -2,12 +2,21 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
+  <meta name="theme-color" content="#0a1628">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Descubre Costalegre, el paraíso escondido de Jalisco, México. Playas vírgenes, naturaleza y experiencias únicas te esperan.">
   <title>Costalegre - Jalisco, México</title>
   
-  <!-- Google Fonts -->
+  <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.pexels.com">
+  <link rel="preconnect" href="https://videos.pexels.com">
+  
+  <!-- Google Fonts with display swap -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   
   <style>
@@ -40,10 +49,19 @@
       /* Transiciones */
       --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       --transition-fast: all 0.2s ease;
+
+      /* Mobile safe areas */
+      --safe-area-top: env(safe-area-inset-top, 0px);
+      --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-area-left: env(safe-area-inset-left, 0px);
+      --safe-area-right: env(safe-area-inset-right, 0px);
     }
 
     html {
       scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     body {
@@ -51,11 +69,69 @@
       background-color: var(--color-white);
       color: var(--color-dark-blue);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      padding-top: var(--safe-area-top);
+      padding-bottom: var(--safe-area-bottom);
+    }
+
+    /* Prevent pull-to-refresh on mobile */
+    body.menu-open {
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
     }
 
     img {
       max-width: 100%;
       height: auto;
+      display: block;
+    }
+
+    /* Touch-friendly tap targets */
+    a, button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Remove tap highlight on mobile */
+    a, button, input, select, textarea {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Focus states for accessibility */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--color-teal);
+      outline-offset: 2px;
+    }
+
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Smooth scrolling containers */
+    .hospedaje-cards,
+    .blog-cards,
+    .destinos-cards {
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .hospedaje-cards::-webkit-scrollbar,
+    .blog-cards::-webkit-scrollbar,
+    .destinos-cards::-webkit-scrollbar {
+      display: none;
     }
 
     a {
@@ -136,10 +212,97 @@
       transition: var(--transition-smooth);
     }
 
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      z-index: 1001;
+    }
+
+    .hamburger-line {
+      width: 24px;
+      height: 2px;
+      background: var(--color-white);
+      border-radius: 2px;
+      transition: var(--transition-smooth);
+    }
+
+    .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .navbar.scrolled .hamburger-line {
+      background: var(--color-dark-blue);
+    }
+
+    /* Mobile Menu Overlay */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--color-dark-blue);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-menu-content {
+      text-align: center;
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .mobile-nav-links a {
+      font-family: var(--font-display);
+      font-size: 36px;
+      color: var(--color-white);
+      transition: var(--transition-smooth);
+    }
+
+    .mobile-nav-links a:hover {
+      color: var(--color-teal);
+    }
+
     /* ========================================
        HERO BANNER
     ======================================== */
     .hero-banner {
+      background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop');
+      background-size: cover;
+      background-position: center;
       position: relative;
       width: 100%;
       height: 100vh;
@@ -1526,9 +1689,13 @@
     }
 
     @media (max-width: 768px) {
+      /* NAVBAR MOBILE */
       .navbar {
-        top: 16px;
-        padding: 12px 24px;
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        padding: 12px 16px;
+        border-radius: 16px;
       }
 
       .nav-links.left,
@@ -1536,61 +1703,133 @@
         display: none;
       }
 
-      .hero-title {
-        font-size: 48px;
+      .mobile-menu-btn {
+        display: flex;
       }
 
-      .bienvenida-title {
+      .nav-logo {
+        font-size: 24px;
+      }
+
+      /* HERO MOBILE */
+      .hero-banner {
+      background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop');
+      background-size: cover;
+      background-position: center;
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding: 24px 16px;
+      }
+
+      .hero-title {
         font-size: 42px;
       }
 
-      .bienvenida-visual img {
-        max-width: 280px;
+      .hero-location {
+        font-size: 13px;
       }
 
+      .btn-ver-video {
+        padding: 14px 24px;
+        font-size: 14px;
+        min-height: 48px;
+      }
+
+      /* BIENVENIDA MOBILE */
+      .bienvenida {
+        padding: 60px 16px;
+        gap: 32px;
+      }
+
+      .bienvenida-content {
+        text-align: center;
+      }
+
+      .bienvenida-tag {
+        justify-content: center;
+      }
+
+      .bienvenida-title {
+        font-size: 36px;
+      }
+
+      .bienvenida-subtitle {
+        font-size: 20px;
+      }
+
+      .bienvenida-text {
+        font-size: 15px;
+      }
+
+      .bienvenida-visual img {
+        max-width: 240px;
+      }
+
+      /* UBICACIÓN MOBILE */
       .ubicacion-wrapper {
         padding: 16px;
       }
 
       .ubicacion {
         height: auto;
-        min-height: 500px;
+        min-height: 480px;
         border-radius: 20px;
       }
 
       .ubicacion-bg {
-        width: 50%;
-        opacity: 0.5;
+        width: 60%;
+        opacity: 0.4;
       }
 
       .ubicacion-title {
-        font-size: 32px;
+        font-size: 28px;
+      }
+
+      .ubicacion-text {
+        font-size: 14px;
       }
 
       .ubicacion-content {
-        padding: 32px 24px;
+        padding: 24px 16px;
+      }
+
+      .btn-outline {
+        padding: 14px 24px;
+        font-size: 14px;
+        min-height: 48px;
       }
 
       .destinos-cards {
-        gap: 12px;
+        gap: 10px;
         padding: 12px;
       }
 
       .destino-card {
-        flex: 0 0 160px;
-        height: 120px;
-        padding: 16px;
+        flex: 0 0 140px;
+        height: 100px;
+        padding: 14px;
+        border-radius: 12px;
       }
 
       .destino-name {
-        font-size: 16px;
+        font-size: 14px;
       }
 
+      .destino-tag {
+        font-size: 9px;
+      }
+
+      /* SECCIONES TÍTULOS MOBILE */
       .ubicacion-title,
       .experiencias-title,
       .hospedaje-title,
       .blog-title {
-        font-size: 36px;
+        font-size: 32px;
+      }
+
+      /* EXPERIENCIAS MOBILE */
+      .experiencias {
+        padding: 60px 16px;
       }
 
       .experiencias-header {
@@ -1600,8 +1839,9 @@
       }
 
       .experiencias-slider {
-        height: 400px;
+        height: 450px;
         flex-direction: column;
+        border-radius: 20px;
       }
 
       .experiencia-main {
@@ -1609,7 +1849,7 @@
       }
 
       .experiencia-preview {
-        flex: 0 0 80px;
+        flex: 0 0 70px;
         width: 100%;
       }
 
@@ -1617,38 +1857,71 @@
         writing-mode: horizontal-tb;
         transform: none;
         margin: 0;
+        font-size: 14px;
       }
 
       .experiencia-preview-overlay {
         flex-direction: row;
         justify-content: space-between;
+        padding: 16px;
       }
 
       .experiencia-next-btn {
         margin: 0;
+        width: 44px;
+        height: 44px;
       }
 
       .experiencia-overlay {
         width: 100%;
-        padding: 24px;
+        padding: 20px;
+        background: linear-gradient(0deg, rgba(10,22,40,0.9) 0%, rgba(10,22,40,0.7) 50%, transparent 100%);
+        justify-content: flex-end;
+      }
+
+      .experiencia-tag {
+        font-size: 10px;
       }
 
       .experiencia-name {
-        font-size: 28px;
+        font-size: 26px;
       }
 
       .experiencia-desc {
+        font-size: 13px;
+        max-width: 100%;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .experiencia-link {
+        font-size: 13px;
+        padding: 10px 0;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .experiencia-counter {
+        bottom: 90px;
+        right: 20px;
         font-size: 14px;
       }
 
-      .hospedaje,
-      .blog {
+      .experiencia-counter span {
+        font-size: 24px;
+      }
+
+      /* HOSPEDAJE MOBILE */
+      .hospedaje {
         padding: 60px 0 60px 16px;
       }
 
       .hospedaje-container {
         flex-direction: column;
-        gap: 32px;
+        gap: 24px;
       }
 
       .hospedaje-left {
@@ -1657,18 +1930,99 @@
         padding-right: 16px;
       }
 
+      .hospedaje-title {
+        font-size: 28px;
+      }
+
+      .hospedaje-text {
+        font-size: 14px;
+      }
+
+      .hospedaje-nav {
+        margin-top: 24px;
+      }
+
+      .nav-arrow {
+        width: 44px;
+        height: 44px;
+      }
+
       .hospedaje-cards {
         flex-direction: row;
         overflow-x: auto;
         padding-right: 16px;
+        gap: 16px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
       }
 
       .hotel-card {
-        flex: 0 0 260px;
+        flex: 0 0 280px;
+        scroll-snap-align: start;
       }
 
       .hotel-image {
-        height: 200px;
+        height: 180px;
+      }
+
+      .hotel-badges {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        gap: 6px;
+      }
+
+      .hotel-badge {
+        padding: 5px 10px;
+        font-size: 11px;
+      }
+
+      .hotel-price {
+        padding: 8px 14px;
+        font-size: 14px;
+      }
+
+      .hotel-content {
+        padding: 16px;
+      }
+
+      .hotel-name {
+        font-size: 18px;
+      }
+
+      .hotel-detail {
+        font-size: 12px;
+      }
+
+      .hotel-link {
+        font-size: 13px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      /* BANNER CTA MOBILE */
+      .banner-cta-wrapper {
+        padding: 24px 16px;
+      }
+
+      .banner-cta {
+        height: 280px;
+        border-radius: 20px;
+      }
+
+      .banner-cta-title {
+        font-size: 28px;
+      }
+
+      .banner-cta-subtitle {
+        font-size: 11px;
+        letter-spacing: 0.2em;
+      }
+
+      /* BLOG MOBILE */
+      .blog {
+        padding: 60px 0 60px 16px;
       }
 
       .blog-container {
@@ -1681,35 +2035,56 @@
         padding-right: 16px;
       }
 
+      .blog-title {
+        font-size: 28px;
+      }
+
+      .blog-text {
+        font-size: 14px;
+      }
+
+      .blog-nav {
+        margin-top: 24px;
+      }
+
       .blog-cards {
         flex-direction: row;
         overflow-x: auto;
         padding-right: 16px;
+        gap: 16px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
       }
 
       .blog-card {
-        flex: 0 0 260px;
+        flex: 0 0 280px;
+        scroll-snap-align: start;
       }
 
-      .banner-cta-wrapper {
-        padding: 24px 16px;
+      .blog-card-image {
+        height: 180px;
+        border-radius: 14px;
       }
 
-      .banner-cta {
-        height: 300px;
-        border-radius: 24px;
+      .blog-card-date {
+        padding: 6px 12px;
+        font-size: 11px;
       }
 
-      .banner-cta-title {
-        font-size: 32px;
+      .blog-card-title {
+        font-size: 17px;
       }
 
-      .banner-cta-subtitle {
-        font-size: 12px;
+      .blog-card-link {
+        font-size: 13px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
       }
 
+      /* FOOTER MOBILE */
       .footer {
-        padding: 48px 16px 24px;
+        padding: 40px 16px 24px;
         border-radius: 24px 24px 0 0;
       }
 
@@ -1719,18 +2094,113 @@
       }
 
       .footer-logo img {
-        height: 60px;
+        height: 56px;
       }
 
       .footer-nav {
         flex-direction: column;
         gap: 24px;
+        width: 100%;
       }
 
       .footer-nav-main ul {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px 20px;
+      }
+
+      .footer-nav-main a {
+        font-size: 15px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .footer-nav-legal ul {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .footer-nav-legal a {
+        font-size: 12px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .footer-social {
+        margin-top: 16px;
+      }
+
+      .footer-social a {
+        width: 44px;
+        height: 44px;
+      }
+
+      .footer-copyright {
+        font-size: 12px;
+      }
+    }
+
+    /* Extra Small Screens (phones in portrait) */
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 36px;
+      }
+
+      .bienvenida-title {
+        font-size: 32px;
+      }
+
+      .bienvenida-subtitle {
+        font-size: 18px;
+      }
+
+      .ubicacion-title,
+      .experiencias-title,
+      .hospedaje-title,
+      .blog-title {
+        font-size: 28px;
+      }
+
+      .experiencias-slider {
+        height: 400px;
+      }
+
+      .experiencia-name {
+        font-size: 22px;
+      }
+
+      .experiencia-desc {
+        font-size: 12px;
+        -webkit-line-clamp: 2;
+      }
+
+      .hotel-card,
+      .blog-card {
+        flex: 0 0 260px;
+      }
+
+      .destino-card {
+        flex: 0 0 130px;
+        height: 90px;
+        padding: 12px;
+      }
+
+      .destino-name {
+        font-size: 13px;
+      }
+
+      .banner-cta {
+        height: 240px;
+      }
+
+      .banner-cta-title {
+        font-size: 24px;
+      }
+
+      .mobile-nav-links a {
+        font-size: 28px;
       }
     }
   </style>
@@ -1750,7 +2220,26 @@
       <li><a href="#hospedaje">Hospedaje</a></li>
       <li><a href="#blog">Blog</a></li>
     </ul>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
   </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-content">
+      <ul class="mobile-nav-links">
+        <li><a href="#destinos" onclick="closeMobileMenu()">Destinos</a></li>
+        <li><a href="#experiencias" onclick="closeMobileMenu()">Experiencias</a></li>
+        <li><a href="#hospedaje" onclick="closeMobileMenu()">Hospedaje</a></li>
+        <li><a href="#blog" onclick="closeMobileMenu()">Blog</a></li>
+      </ul>
+    </div>
+  </div>
 
   <!-- HERO BANNER -->
   <section class="hero-banner">
@@ -2446,19 +2935,79 @@
   </footer>
 
   <script>
-    // Navbar scroll effect
+    // ========================================
+    // MOBILE MENU
+    // ========================================
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    function toggleMobileMenu() {
+      mobileMenuBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    }
+    
+    function closeMobileMenu() {
+      mobileMenuBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      }
+    });
+
+    // ========================================
+    // NAVBAR SCROLL EFFECT
+    // ========================================
     const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+    
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 100) {
+      const currentScroll = window.scrollY;
+      
+      // Add/remove scrolled class
+      if (currentScroll > 100) {
         navbar.classList.add('scrolled');
       } else {
         navbar.classList.remove('scrolled');
       }
+      
+      lastScroll = currentScroll;
+    }, { passive: true });
+
+    // ========================================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ========================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          const offsetTop = target.offsetTop - 100;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
     });
 
-    // Experiencias Slider
+    // ========================================
+    // EXPERIENCIAS SLIDER
+    // ========================================
     let currentExperiencia = 0;
     const totalExperiencias = 5;
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     function nextExperiencia() {
       const cards = document.querySelectorAll('.experiencia-card');
@@ -2472,6 +3021,120 @@
       cards[currentExperiencia].classList.remove('active');
       currentExperiencia = (currentExperiencia - 1 + totalExperiencias) % totalExperiencias;
       cards[currentExperiencia].classList.add('active');
+    }
+
+    // Touch swipe support for experiencias slider
+    const experienciasSlider = document.querySelector('.experiencias-slider');
+    if (experienciasSlider) {
+      experienciasSlider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      experienciasSlider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+    }
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          nextExperiencia();
+        } else {
+          prevExperiencia();
+        }
+      }
+    }
+
+    // ========================================
+    // HORIZONTAL SCROLL INDICATORS
+    // ========================================
+    function setupScrollIndicators() {
+      const scrollContainers = document.querySelectorAll('.hospedaje-cards, .blog-cards, .destinos-cards');
+      
+      scrollContainers.forEach(container => {
+        // Add scroll snap behavior
+        container.style.scrollSnapType = 'x mandatory';
+        
+        // Add momentum scrolling for iOS
+        container.style.webkitOverflowScrolling = 'touch';
+      });
+    }
+    
+    setupScrollIndicators();
+
+    // ========================================
+    // LAZY LOADING FOR IMAGES
+    // ========================================
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+            }
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '50px 0px'
+      });
+
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
+
+    // ========================================
+    // PREVENT 300MS CLICK DELAY
+    // ========================================
+    document.addEventListener('touchstart', function() {}, { passive: true });
+
+    // ========================================
+    // VIEWPORT HEIGHT FIX FOR MOBILE
+    // ========================================
+    function setVH() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(setVH, 100);
+    });
+
+    // ========================================
+    // HORIZONTAL SCROLL NAV BUTTONS
+    // ========================================
+    function scrollContainer(containerClass, direction) {
+      const container = document.querySelector(containerClass);
+      if (container) {
+        const scrollAmount = container.offsetWidth * 0.8;
+        container.scrollBy({
+          left: direction === 'next' ? scrollAmount : -scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    // Hospedaje navigation
+    const hospedajeNav = document.querySelectorAll('.hospedaje-nav .nav-arrow');
+    if (hospedajeNav.length === 2) {
+      hospedajeNav[0].addEventListener('click', () => scrollContainer('.hospedaje-cards', 'prev'));
+      hospedajeNav[1].addEventListener('click', () => scrollContainer('.hospedaje-cards', 'next'));
+    }
+
+    // Blog navigation
+    const blogNav = document.querySelectorAll('.blog-nav .nav-arrow');
+    if (blogNav.length === 2) {
+      blogNav[0].addEventListener('click', () => scrollContainer('.blog-cards', 'prev'));
+      blogNav[1].addEventListener('click', () => scrollContainer('.blog-cards', 'next'));
     }
   </script>
 
